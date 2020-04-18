@@ -33,7 +33,9 @@ jobs:
         git config --global user.name "Shinji Matsumoto (cron job)"
         git remote -v
         git status
-        git add .
+        git fetch origin
+        git checkout origin/master
+        git add pdf/*.pdf csv/*.csv
         git commit -m 'Update by GithubAction'
-        git push origin HEAD:${GITHUB_REF}
+        git push origin master
 
