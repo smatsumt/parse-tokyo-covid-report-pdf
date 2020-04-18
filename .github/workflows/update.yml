@@ -9,6 +9,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  schedule:
+    - cron: "0 10-12 * * *"  # 19:00 - 21:00 JST
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,10 +28,10 @@ jobs:
     - name: Update 
       run: |
         pip3 install -r requirements.txt
-        ./run.sh
+        ./run.sh  || exit (($? - 255))
         git config --global user.email "shinji.mtsmt@gmail.com"
         git config --global user.name "Shinji Matsumoto (cron job)"
-        git status
+        git checkout master
         git add .
         git commit -m 'Update by GithubAction'
         git push
