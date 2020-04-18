@@ -16,7 +16,5 @@ if [[ ${NEW_CSV_FILE} != ${DAY_CSV_FILE} ]]; then
   cp "${NEW_CSV_FILE}" "${DAY_CSV_FILE}"
 fi
 
-# latest.csv のリンクを生成
-cd csv || exit 1
-rm latest.csv
-ln -s "${NEW_CSV_FILE/csv\/}" latest.csv
+# latest.csv のコピーを生成
+cp "${NEW_CSV_FILE}" csv/latest.csv
