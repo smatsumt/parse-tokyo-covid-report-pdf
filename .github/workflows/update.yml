@@ -28,7 +28,7 @@ jobs:
     - name: Update 
       run: |
         pip3 install -r requirements.txt
-        ./run.sh  || exit (($? - 255))
+        ./run.sh  || exit $(($? - 255))
         git config --global user.email "shinji.mtsmt@gmail.com"
         git config --global user.name "Shinji Matsumoto (cron job)"
         git checkout master
