@@ -10,7 +10,7 @@ on:
 #  pull_request:
 #    branches: [ master ]
   schedule:
-    - cron: "0 10-12 * * *"  # 19:00 - 21:00 JST
+    - cron: "0 11-15 * * *"  # 20:00 - 24:00 JST
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
