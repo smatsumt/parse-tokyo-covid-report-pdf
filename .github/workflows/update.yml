@@ -34,7 +34,9 @@ jobs:
         git remote -v
         git status
         git fetch origin
+        git stash
         git checkout origin/master
+        git stash pop
         git add pdf/*.pdf csv/*.csv
         git commit -m 'Update by GithubAction'
         git push origin master
