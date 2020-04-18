@@ -3,7 +3,8 @@
 # PDF をとってくる
 NEW_PDF_FILE=$(./fetch_tokyo_covid_report_pdf.py)
 if [[ -z "${NEW_PDF_FILE}" ]] ;then
-  exit 0
+  echo "No new PDF. exited"
+  exit 255
 fi
 
 # PDF から CSV を生成

@@ -5,10 +5,12 @@ name: CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
+  schedule:
+    - cron: "0 10-12 * * *"  # 19:00 - 21:00 JST
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,9 +27,14 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Update 
       run: |
-        pip install -r requirements.txt
-        ./run.sh
-        git add .
-        git commit -m 'Update by GithubAction'
-        git push
-
+        pip3 install -r requirements.txt
+        ./run.sh  || exit $(($? - 255))
+        git config --global user.email "shinji.mtsmt@gmail.com"
+        git config --global user.name "Shinji Matsumoto (cron job)"
+        git remote -v
+        git status
+        git fetch origin
+        git checkout master
+        git add pdf/*.pdf csv/*.csv
+        git commit -m 'Update by GitHub Actions'
+        git push origin master
