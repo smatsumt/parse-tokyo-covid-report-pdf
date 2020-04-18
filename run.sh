@@ -3,6 +3,7 @@
 # PDF をとってくる
 NEW_PDF_FILE=$(./fetch_tokyo_covid_report_pdf.py)
 if [[ -z "${NEW_PDF_FILE}" ]] ;then
+  echo "No new PDF. exited"
   exit 0
 fi
 
