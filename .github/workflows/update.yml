@@ -5,10 +5,10 @@ name: CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
   schedule:
     - cron: "0 10-12 * * *"  # 19:00 - 21:00 JST
 
@@ -36,6 +36,5 @@ jobs:
         git fetch origin
         git checkout master
         git add pdf/*.pdf csv/*.csv
-        git commit -m 'Update by GithubAction'
+        git commit -m 'Update by GitHub Actions'
         git push origin master
-
