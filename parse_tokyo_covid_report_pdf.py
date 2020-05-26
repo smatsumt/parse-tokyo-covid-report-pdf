@@ -8,16 +8,18 @@ https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1007261/index.html の
 
 import argparse
 from collections import defaultdict
+import logging
+import os
 
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LAParams, LTContainer, LTTextLine
 from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 
-# 区ごとの情報が記載されている箇所の座標情報
-# PDF は左下原点のため、START のほうが Y が大きい。
-TABLE_START_Y1 = 400
-TABLE_END_Y1 = 150
+logger = logging.getLogger(__name__)
+
+TABLE_START_TEXT = "千代田"
+TABLE_END_TEXT = "今後の調査の状況"
 
 
 def main():
@@ -25,10 +27,18 @@ def main():
     parser.add_argument('filename', type=str, help='別紙 PDF のファイル名')
     args = parser.parse_args()
 
+    logging.basicConfig(level=os.getenv("LOGGING_LEVEL", "INFO"))
+
     # 指定範囲内の LTTextLine を読み取り
     texts = parse_txt(args.filename)
     first_page_texts = next(texts)
-    tabel_texts = filter(lambda b: TABLE_END_Y1 < b.y1 < TABLE_START_Y1, first_page_texts)
+    start_box = next(filter(lambda b: TABLE_START_TEXT in b.get_text(), first_page_texts))
+    end_box = min(filter(lambda b: TABLE_END_TEXT in b.get_text(), first_page_texts),
+                  key=lambda b: b.y1)
+    logger.warning(start_box.y1)
+    logger.warning(end_box.y1)
+    # PDF は左下原点のため、START のほうが Y が大きい。
+    tabel_texts = filter(lambda b: end_box.y1 < b.y1 <= start_box.y1, first_page_texts)
 
     # 読み取った LTTextLine を 行ごとに区分け
     lines = defaultdict(list)
