@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1010035/1011628/index.html の
+https://www.bousai.metro.tokyo.lg.jp/index.html の最新の本部報にある 
 "患者の発生について" （別紙）PDF ファイル、最新のものを "pdf" フォルダにとってくる
 
 新しくとってきたファイルを stdout に出力する。(なければ、何も出さない)
@@ -17,10 +17,21 @@ from urllib.request import urlretrieve
 import requests
 from bs4 import BeautifulSoup
 
-BASE_URL = "https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1010035/1011628/"
+INDEX_URL = "https://www.bousai.metro.tokyo.lg.jp/"
 
+INDEX_PAGE_KEYWORD = "最新の本部報"
 REPORT_PAGE_KEYWORD = "新型コロナウイルスに関連した患者の発生について"
 APPENDIX_SELECTOR = "li.pdf > a"
+
+
+def find_latest_report_index(base_url: str):
+    r = requests.get(base_url)
+    soup = BeautifulSoup(r.content, "html.parser")
+
+    for a in soup.find_all("a"):
+        if INDEX_PAGE_KEYWORD in str(a.string):
+            return urljoin(base_url, a.get("href"))
+    return ""
 
 
 def find_latest_report_page(base_url: str):
@@ -63,7 +74,8 @@ def main():
     # parser.add_argument('filenames', nargs='+', help='')
     args = parser.parse_args()
 
-    latest_report_page_url = find_latest_report_page(BASE_URL)
+    latest_report_index_url = find_latest_report_index(INDEX_URL)
+    latest_report_page_url = find_latest_report_page(latest_report_index_url)
     if not latest_report_page_url:
         sys.exit(1)  # まったくないことはないはず
     # print(latest_report_page_url)
