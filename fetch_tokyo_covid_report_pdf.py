@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1007261/index.html の
+https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1010035/1011628/index.html の
 "患者の発生について" （別紙）PDF ファイル、最新のものを "pdf" フォルダにとってくる
 
 新しくとってきたファイルを stdout に出力する。(なければ、何も出さない)
@@ -17,7 +17,7 @@ from urllib.request import urlretrieve
 import requests
 from bs4 import BeautifulSoup
 
-BASE_URL = "https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1007261/"
+BASE_URL = "https://www.bousai.metro.tokyo.lg.jp/taisaku/saigai/1010035/1011628/"
 
 REPORT_PAGE_KEYWORD = "新型コロナウイルスに関連した患者の発生について"
 APPENDIX_SELECTOR = "li.pdf > a"
